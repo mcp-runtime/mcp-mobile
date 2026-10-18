@@ -10,6 +10,12 @@ coverage/
 # Production
 build/
 dist/
+target/
+.build/
+.swiftpm/
+.gradle/
+.kotlin/
+local.properties
 
 # Misc
 .DS_Store
@@ -58,8 +64,7 @@ explore/
 Thumbs.db
 
 # Build artifacts
-ios/
-android/
+# Ignore generated native output, not future SDK source directories.
 web-build/
 
 # Patches (keep the patches directory but ignore node_modules changes)

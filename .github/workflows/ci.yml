@@ -1,49 +1,35 @@
-name: CI
-
+name: SDK checks
 on:
   push:
-    branches:
-      - '**'
-    tags:
-      - '**'
+    branches: ['**']
   pull_request:
-    branches:
-      - '**'
-  workflow_dispatch:
-
+permissions:
+  contents: read
 jobs:
-  lint:
+  swift:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --jobs 4
+      - run: swift run --jobs 4 MCPMobileCheck
+      - name: Compile the iOS library
+        run: >-
+          swift build --target MCPMobile --jobs 4
+          --triple arm64-apple-ios16.0-simulator
+          --sdk "$(xcrun --sdk iphonesimulator --show-sdk-path)"
+          --scratch-path .build-ios
+  kotlin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-java@v4
         with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lint --if-present
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - run: mvn -B -ntp verify
+      - run: python3 scripts/package_release.py
+      - uses: actions/upload-artifact@v4
         with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build --if-present
-
-  mcp-flow:
-    env:
-      MCP_HOST: ${{ secrets.MCP_HOST }}
-      MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run test:mcp-flow
+          name: mcp-mobile-client
+          path: target/release/*

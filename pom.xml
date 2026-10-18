@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.github.mcp-runtime</groupId><artifactId>mcp-mobile-client</artifactId><version>0.1.0</version>
+  <name>MCP Mobile Client</name><description>Android-friendly lifecycle and credential integration around the official MCP Kotlin client.</description>
+  <url>https://github.com/mcp-runtime/mcp-mobile</url>
+  <developers><developer><id>mcp-runtime</id><name>MCP Runtime contributors</name><url>https://github.com/mcp-runtime</url></developer></developers>
+  <scm><connection>scm:git:https://github.com/mcp-runtime/mcp-mobile.git</connection><developerConnection>scm:git:ssh://git@github.com/mcp-runtime/mcp-mobile.git</developerConnection><url>https://github.com/mcp-runtime/mcp-mobile</url><tag>v${project.version}</tag></scm>
+  <licenses><license><name>MIT</name><url>https://opensource.org/license/mit</url></license></licenses>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <kotlin.version>2.4.0</kotlin.version><mcp.version>0.15.0</mcp.version><ktor.version>3.5.1</ktor.version>
+    <maven.compiler.release>8</maven.compiler.release>
+    <project.build.outputTimestamp>2026-10-18T00:00:00Z</project.build.outputTimestamp>
+  </properties>
+  <dependencies>
+    <dependency><groupId>io.modelcontextprotocol</groupId><artifactId>kotlin-sdk-client-jvm</artifactId><version>${mcp.version}</version></dependency>
+    <dependency><groupId>io.ktor</groupId><artifactId>ktor-client-okhttp-jvm</artifactId><version>${ktor.version}</version></dependency>
+    <dependency><groupId>org.jetbrains.kotlinx</groupId><artifactId>kotlinx-coroutines-core-jvm</artifactId><version>1.11.0</version></dependency>
+    <dependency><groupId>org.jetbrains.kotlin</groupId><artifactId>kotlin-stdlib</artifactId><version>${kotlin.version}</version></dependency>
+    <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><version>5.14.4</version><scope>test</scope></dependency>
+    <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-nop</artifactId><version>2.0.18</version><scope>test</scope></dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src/main/kotlin</sourceDirectory><testSourceDirectory>src/test/kotlin</testSourceDirectory>
+    <plugins>
+      <plugin><groupId>org.jetbrains.kotlin</groupId><artifactId>kotlin-maven-plugin</artifactId><version>${kotlin.version}</version>
+        <configuration><jvmTarget>1.8</jvmTarget><args><arg>-Xjdk-release=8</arg></args></configuration>
+        <executions><execution><id>compile</id><goals><goal>compile</goal></goals></execution><execution><id>test-compile</id><goals><goal>test-compile</goal></goals></execution></executions>
+      </plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.14.1</version></plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>3.5.4</version></plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.4.2</version>
+        <executions><execution><id>api-guide</id><phase>package</phase><goals><goal>jar</goal></goals><configuration><classifier>javadoc</classifier><classesDirectory>${project.basedir}/docs/api</classesDirectory></configuration></execution></executions>
+      </plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-source-plugin</artifactId><version>3.3.1</version><executions><execution><id>sources</id><goals><goal>jar-no-fork</goal></goals></execution></executions></plugin>
+      <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId><version>3.8.1</version></plugin>
+    </plugins>
+  </build>
+  <profiles><profile><id>central-publish</id><build><plugins>
+    <plugin><groupId>org.sonatype.central</groupId><artifactId>central-publishing-maven-plugin</artifactId><version>0.12.0</version><extensions>true</extensions><configuration><publishingServerId>central</publishingServerId><autoPublish>true</autoPublish><waitUntil>published</waitUntil></configuration></plugin>
+    <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-gpg-plugin</artifactId><version>3.2.8</version><executions><execution><id>sign-artifacts</id><phase>verify</phase><goals><goal>sign</goal></goals></execution></executions><configuration><bestPractices>true</bestPractices><gpgArguments><arg>--pinentry-mode</arg><arg>loopback</arg></gpgArguments></configuration></plugin>
+  </plugins></build></profile></profiles>
+</project>

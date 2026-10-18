@@ -1,117 +1,112 @@
-# MCP Mobile Client
+# MCP Mobile
 
-A cross-platform mobile client for the Model Context Protocol (MCP), built with React Native and Expo.
+Small native adapters around the **official MCP SDKs**, for apps that need an MCP client.
 
-## Features
+Android uses the official [Kotlin SDK](https://github.com/modelcontextprotocol/kotlin-sdk); iOS uses the official [Swift SDK](https://github.com/modelcontextprotocol/swift-sdk). This repository owns mobile connection ergonomics, cancellation, credential integration and native authentication helpers. It does not implement another MCP protocol stack or ship a chat application.
 
-- 🤖 **MCP Server Integration** - Connect to MCP servers and use their tools
-- 💬 **AI Chat Interface** - Chat with OpenAI or Anthropic models
-- 🛠️ **Tool Calling** - Execute MCP tools directly from chat
-- ⚙️ **Server Management** - Configure and manage multiple MCP servers
-- 📱 **Cross-Platform** - Works on iOS and Android
+The [Cully apps](https://github.com/mcp-runtime/cully/tree/main/apps) are the first consumers. App UI, model inference, skills, task policy and service URLs stay in Cully. Other apps configure their own servers.
 
-## Architecture
+## 0.1.0 preview
 
-This is a monorepo containing:
+| | Android / JVM | iOS / Apple platforms |
+| --- | --- | --- |
+| Upstream | MCP Kotlin SDK 0.15.0 | MCP Swift SDK 0.12.1 |
+| API | Kotlin suspend + Java callbacks | Swift actor + async/await |
+| Connection | Streamable HTTP/SSE | Streamable HTTP/SSE |
+| Tools | Discovery, pagination, invocation | Discovery, pagination, invocation |
+| Credentials | Host-supplied current bearer token | Host token provider or upstream OAuth authorizer |
+| Native helpers | Cancellable Java requests | System-browser OAuth presenter, device-only Keychain token storage |
+| Minimum | Android API 26+; verified on API 30 | iOS 16+, macOS 13+, Swift 6.1 |
 
-- `packages/mcp-core` - Shared TypeScript MCP client library (transport, auth, queue, types)
-- `apps/mobile` - Expo React Native mobile app with chat and settings screens
+Both adapters enforce HTTPS, with explicit loopback HTTP for development. Operations have bounded timeouts. No offline tool-call queue or wrapper-level automatic replay is added. Kotlin disables redirects and OkHttp connection retries; Swift uses the upstream Foundation transport and its configured OAuth challenge recovery. A cancelled action may already have run on the server.
 
-## Getting Started
+This is a preview. See [verification](docs/VERIFICATION.md) for actual tested environments and remaining device checks. There is no paid model API or inference dependency in this SDK.
 
-### Prerequisites
+## Android installation
 
-- Node.js 18+ 
-- npm or yarn
-- Expo CLI (installed globally or via npx)
-- For iOS: Xcode and CocoaPods
-- For Android: Android Studio and Android SDK
+JDK 17 and Maven 3.9+ build the library:
 
-### Installation
-
-```bash
-# Install dependencies
-npm install
-
-# Start the mobile app
-npm run dev:mobile
-
-# Or start with cleared cache
-npm run dev:mobile:clear
+```sh
+mvn -B verify install
 ```
 
-### Running on Device/Emulator
+For a local Android project, add `mavenLocal()` and `mavenCentral()` to dependency repositories, then:
 
-```bash
-# Android
-npm run android
-
-# iOS
-npm run ios
-
-# Web
-npm run web
+```kotlin
+implementation("io.github.mcp-runtime:mcp-mobile-client:0.1.0")
 ```
 
-## Configuration
+Use Kotlin 2.4+ for Kotlin consumers. Java consumers use the callback facade. The artifact is **not published to Maven Central** in this preview. Alternatively, download the release's `mcp-mobile-client-0.1.0-repository.zip`, verify it against `SHA256SUMS`, extract it and add its `repository/` directory as a local Maven repository alongside Maven Central. The POM resolves upstream dependencies normally.
 
-### MCP Servers
-
-1. Open the app and go to Settings
-2. Add your MCP server configuration:
-   - Server URL
-   - Endpoint (default: `/mcp`)
-   - Authentication token (if required)
-   - Default tool preference
-
-### API Keys
-
-Add your API keys in Settings:
-- **OpenAI API Key** - For GPT models
-- **Anthropic API Key** - For Claude models
-
-## Project Structure
-
-```
-.
-├── apps/
-│   └── mobile/          # Expo React Native app
-│       ├── app/         # Expo Router routes
-│       ├── components/  # React components
-│       └── packages/    # Local packages
-├── packages/
-│   └── mcp-core/       # Shared MCP client library
-└── package.json        # Root workspace config
+```kotlin
+val client = McpMobileClient(
+    endpoint = serverUrl,
+    tokenProvider = AccessTokenProvider { credentialStore.currentAccessToken() }
+)
+try {
+    client.connect()
+    val page = client.listTools()
+    // Present tools under your app's permission policy. page.nextCursor preserves pagination.
+} finally {
+    client.close()
+}
 ```
 
-## Development
+In Java:
 
-### Workspace Scripts
+```java
+McpMobileJavaClient client = new McpMobileJavaClient(
+    serverUrl, () -> credentialStore.currentAccessToken());
+McpRequest request = client.connect(new McpCallback() {
+    public void onSuccess(String json) {
+        // Now use listTools(cursor, callback) or callTool(name, argumentsJson, callback).
+    }
+    public void onError(String code, String message) {
+        activity.runOnUiThread(() -> showConnectionError(message));
+    }
+});
+// Cancel an individual operation: request.cancel();
+// Close in the owning screen/service lifecycle: client.close();
+```
 
-- `npm run dev:mobile` - Start Metro bundler
-- `npm run dev:mobile:clear` - Start with cleared cache
-- `npm run android` - Open on Android
-- `npm run ios` - Open on iOS simulator
-- `npm run web` - Open in web browser
+Callbacks run on IO threads. Java errors are sanitized; optional `lastFailureTypes` contains exception class names only. Kotlin callers receive upstream exceptions and should avoid logging full responses or credentials. `close()` is final: create a new client for a new connection. Cancel Kotlin operation jobs before awaiting close; the Java facade cancels and releases its own jobs asynchronously.
 
-## Tech Stack
+## iOS installation
 
-- **React Native** - Mobile framework
-- **Expo** - Development platform and tooling
-- **Expo Router** - File-based routing
-- **React Navigation** - Navigation library
-- **TypeScript** - Type safety
+Add this repository as a Swift package with version `0.1.0`, then select the `MCPMobile` library product. Or add it to `Package.swift`:
 
-## License
+```swift
+.package(url: "https://github.com/mcp-runtime/mcp-mobile.git", from: "0.1.0")
+// Target dependency:
+.product(name: "MCPMobile", package: "mcp-mobile")
+```
 
-MIT License - see [LICENSE](LICENSE) file for details.
+```swift
+import MCPMobile
 
-## Contributing
+let client = try MCPMobileClient(endpoint: serverURL, accessTokenProvider: {
+    credentials.currentAccessToken()
+})
+try await client.connect()
+let page = try await client.listTools()
+await client.close()
+```
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+For interactive sign-in, supply the official `OAuthAuthorizer` with `BrowserAuthorizationPresenter` as its authorization delegate, and optionally `KeychainTokenStorage`. The host provides its callback scheme, presentation window and OAuth scope policy. Register the callback URL scheme in the app's Info.plist. See Cully's `apps/ios/Sources/CullyModel.swift` for a consuming application. No client secret belongs in a public mobile app.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Checks and release packaging
+
+```sh
+mvn -B verify
+swift test --jobs 4                # Xcode includes XCTest
+swift run --jobs 4 MCPMobileCheck # Also works with Swift Command Line Tools
+python3 scripts/package_release.py
+```
+
+The opt-in live test reads `CULLY_MOBILE_SESSION_FILE`, a private JSON file with `endpoint` and a fresh `access_token`. It discovers tools and makes one bounded read-only Cully context call. Never commit that file, credentials, server content or device transcripts. Public CI uses fixtures and does not require a Cully account.
+
+## Migration
+
+The old Expo app and custom TypeScript `@mcp/core` have been retired. They remain in Git history. There is no TypeScript package or React Native bridge in 0.1.0. Native Cully app sources live in `mcp-runtime/cully/apps`; this repository is reusable SDK code.
+
+See [architecture](docs/ARCHITECTURE.md), [plan](PLAN.md), and [third-party licenses](THIRD_PARTY.md). MIT license.
