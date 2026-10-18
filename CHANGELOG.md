@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Update source, Swift package and Cully links to the renamed Tavric Labs organization. Keep the existing portable Maven coordinates stable and document the namespace check required before Central publication.
+
 ## 0.1.0 — Native mobile preview
 
 - Replace the Expo chat demo and custom TypeScript `@mcp/core` implementation with a small Kotlin/JVM SDK around the official MCP Kotlin client 0.15.0.
@@ -9,4 +13,4 @@
 - Preserve upstream tool results and pagination; keep app UI, inference, permissions, sign-in and token persistence in the host application.
 - Add local HTTP integration tests, an opt-in authenticated Cully MCP test, CI, source jars and a portable Maven repository release bundle.
 
-The former demo is available in Git history. Native Cully application sources belong in [mcp-runtime/cully](https://github.com/mcp-runtime/cully), not this SDK repository. Physical iPhone verification remains pending.
+The former demo is available in Git history. Native Cully application sources belong in [tavric-labs/cully](https://github.com/tavric-labs/cully), not this SDK repository. Physical iPhone verification remains pending.

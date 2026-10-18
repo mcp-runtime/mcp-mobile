@@ -6,6 +6,8 @@ The `Release SDKs` workflow runs on `v*` tags, checks that the tag matches the M
 
 Publication uses Sonatype Central Portal, not the retired OSSRH staging service. The POM includes SCM/developer/license metadata, sources and a documentation jar containing a hand-authored API guide. The `central-publish` profile signs artifacts and waits for Central publication.
 
+The GitHub organization is now `tavric-labs`. The released portable 0.1.0 artifacts retain `io.github.mcp-runtime`; a GitHub rename does not grant or transfer Sonatype namespace ownership. Before the first Central upload, verify that namespace in the publishing account. If a new `io.github.tavric-labs` namespace is needed, change the group and repository layout together in a new release and update consumer coordinates. Do not relabel or replace the existing 0.1.0 assets.
+
 One-time owner setup:
 
 1. Sign in at https://central.sonatype.com and verify the `io.github.mcp-runtime` namespace. Repository administrator access alone does not create a Central publishing account.

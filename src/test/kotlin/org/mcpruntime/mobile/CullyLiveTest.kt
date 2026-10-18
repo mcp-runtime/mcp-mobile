@@ -25,7 +25,7 @@ class CullyLiveTest {
             val result = client.callTool("cully_context", buildJsonObject {
                 put("query", "mcp-mobile-release-smoke-never-match-6f4b0c2d")
                 put("limit", 1); put("mode", "text")
-                put("project_url", "https://github.com/mcp-runtime/mcp-mobile")
+                put("project_url", "https://github.com/tavric-labs/mcp-mobile")
             })
             assertNotEquals(true, result.isError)
             File("target/cully-live-report.json").writeText(buildJsonObject {

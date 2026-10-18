@@ -4,7 +4,7 @@ Small native adapters around the **official MCP SDKs**, for apps that need an MC
 
 Android uses the official [Kotlin SDK](https://github.com/modelcontextprotocol/kotlin-sdk); iOS uses the official [Swift SDK](https://github.com/modelcontextprotocol/swift-sdk). This repository owns mobile connection ergonomics, cancellation, credential integration and native authentication helpers. It does not implement another MCP protocol stack or ship a chat application.
 
-The [Cully apps](https://github.com/mcp-runtime/cully/tree/main/apps) are the first consumers. App UI, model inference, skills, task policy and service URLs stay in Cully. Other apps configure their own servers.
+The [Cully apps](https://github.com/tavric-labs/cully/tree/main/apps) are the first consumers. App UI, model inference, skills, task policy and service URLs stay in Cully. Other apps configure their own servers.
 
 ## 0.1.0 preview
 
@@ -76,7 +76,7 @@ Callbacks run on IO threads. Java errors are sanitized; optional `lastFailureTyp
 Add this repository as a Swift package with version `0.1.0`, then select the `MCPMobile` library product. Or add it to `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/mcp-runtime/mcp-mobile.git", from: "0.1.0")
+.package(url: "https://github.com/tavric-labs/mcp-mobile.git", from: "0.1.0")
 // Target dependency:
 .product(name: "MCPMobile", package: "mcp-mobile")
 ```
@@ -107,6 +107,6 @@ The opt-in live test reads `CULLY_MOBILE_SESSION_FILE`, a private JSON file with
 
 ## Migration
 
-The old Expo app and custom TypeScript `@mcp/core` have been retired. They remain in Git history. There is no TypeScript package or React Native bridge in 0.1.0. Native Cully app sources live in `mcp-runtime/cully/apps`; this repository is reusable SDK code.
+The old Expo app and custom TypeScript `@mcp/core` have been retired. They remain in Git history. There is no TypeScript package or React Native bridge in 0.1.0. Native Cully app sources live in `tavric-labs/cully/apps`; this repository is reusable SDK code.
 
 See [architecture](docs/ARCHITECTURE.md), [plan](PLAN.md), and [third-party licenses](THIRD_PARTY.md). MIT license.

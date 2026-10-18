@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.mcp-runtime</groupId><artifactId>mcp-mobile-client</artifactId><version>0.1.0</version>
   <name>MCP Mobile Client</name><description>Android-friendly lifecycle and credential integration around the official MCP Kotlin client.</description>
-  <url>https://github.com/mcp-runtime/mcp-mobile</url>
-  <developers><developer><id>mcp-runtime</id><name>MCP Runtime contributors</name><url>https://github.com/mcp-runtime</url></developer></developers>
-  <scm><connection>scm:git:https://github.com/mcp-runtime/mcp-mobile.git</connection><developerConnection>scm:git:ssh://git@github.com/mcp-runtime/mcp-mobile.git</developerConnection><url>https://github.com/mcp-runtime/mcp-mobile</url><tag>v${project.version}</tag></scm>
+  <url>https://github.com/tavric-labs/mcp-mobile</url>
+  <developers><developer><id>tavric-labs</id><name>Tavric Labs contributors</name><url>https://github.com/tavric-labs</url></developer></developers>
+  <scm><connection>scm:git:https://github.com/tavric-labs/mcp-mobile.git</connection><developerConnection>scm:git:ssh://git@github.com/tavric-labs/mcp-mobile.git</developerConnection><url>https://github.com/tavric-labs/mcp-mobile</url><tag>v${project.version}</tag></scm>
   <licenses><license><name>MIT</name><url>https://opensource.org/license/mit</url></license></licenses>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

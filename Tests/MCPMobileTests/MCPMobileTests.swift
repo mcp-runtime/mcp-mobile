@@ -36,7 +36,7 @@ final class MCPMobileTests: XCTestCase {
             let result = try await client.callTool(name: "cully_context", arguments: [
                 "query": .string("mcp-mobile-release-smoke-never-match-6f4b0c2d"),
                 "limit": .int(1), "mode": .string("text"),
-                "project_url": .string("https://github.com/mcp-runtime/mcp-mobile"),
+                "project_url": .string("https://github.com/tavric-labs/mcp-mobile"),
             ])
             XCTAssertNotEqual(result.isError, true)
             await client.close()

@@ -3,7 +3,7 @@ The first native MCP Mobile SDK preview wraps the official MCP Kotlin SDK 0.15.0
 - Kotlin suspend APIs and a Java callback facade, with cancellable requests, host-supplied credentials, explicit connection state and bounded operations.
 - Swift async APIs, system-browser OAuth presentation and a device-only Keychain token adapter.
 - Tool discovery, pagination and invocation preserve upstream protocol models. The SDK adds no offline action replay or model provider.
-- The former Expo demo and custom TypeScript `@mcp/core` are retired. Cully's app sources live in `mcp-runtime/cully/apps`.
+- The former Expo demo and custom TypeScript `@mcp/core` are retired. Cully's app sources live in `tavric-labs/cully/apps`.
 
 **Install:** Swift Package Manager uses this release tag and the `MCPMobile` product. Android consumers can extract the Maven repository bundle and add its `repository/` directory as a local Maven repository. The Android artifact is not on Maven Central. Upstream runtime dependencies resolve through the POM. Verify downloaded artifacts using `SHA256SUMS`.
 
