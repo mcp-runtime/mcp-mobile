@@ -4,6 +4,8 @@ Small native adapters around the **official MCP SDKs**, for apps that need an MC
 
 Android uses the official [Kotlin SDK](https://github.com/modelcontextprotocol/kotlin-sdk); iOS uses the official [Swift SDK](https://github.com/modelcontextprotocol/swift-sdk). This repository owns mobile connection ergonomics, cancellation, credential integration and native authentication helpers. It does not implement another MCP protocol stack or ship a chat application.
 
+Documentation: **https://mcp-mobile.tavric-labs.net**
+
 The [Cully apps](https://github.com/tavric-labs/cully/tree/main/apps) are the first consumers. App UI, model inference, skills, task policy and service URLs stay in Cully. Other apps configure their own servers.
 
 ## 0.1.0 preview
@@ -109,4 +111,4 @@ The opt-in live test reads `CULLY_MOBILE_SESSION_FILE`, a private JSON file with
 
 The old Expo app and custom TypeScript `@mcp/core` have been retired. They remain in Git history. There is no TypeScript package or React Native bridge in 0.1.0. Native Cully app sources live in `tavric-labs/cully/apps`; this repository is reusable SDK code.
 
-See [architecture](docs/ARCHITECTURE.md), [plan](PLAN.md), and [third-party licenses](THIRD_PARTY.md). MIT license.
+See the [documentation site](https://mcp-mobile.tavric-labs.net), [architecture](docs/ARCHITECTURE.md), [plan](PLAN.md), and [third-party licenses](THIRD_PARTY.md). MIT license.
