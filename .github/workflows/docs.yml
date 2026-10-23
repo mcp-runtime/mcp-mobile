@@ -5,15 +5,15 @@ on:
     branches: [main]
     paths:
       - 'docs/**'
-      - '!docs/api/**'
       - 'package.json'
+      - 'scripts/generate-api-page.mjs'
       - 'package-lock.json'
       - '.github/workflows/docs.yml'
   pull_request:
     paths:
       - 'docs/**'
-      - '!docs/api/**'
       - 'package.json'
+      - 'scripts/generate-api-page.mjs'
       - 'package-lock.json'
       - '.github/workflows/docs.yml'
   workflow_dispatch:

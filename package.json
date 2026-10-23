@@ -2,7 +2,10 @@
   "name": "mcp-mobile-docs",
   "private": true,
   "scripts": {
+    "docs:api": "node scripts/generate-api-page.mjs",
+    "predocs:dev": "npm run docs:api",
     "docs:dev": "vitepress dev docs",
+    "predocs:build": "npm run docs:api",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs --port 4173"
   },

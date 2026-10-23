@@ -2,7 +2,41 @@ name: SDK checks
 on:
   push:
     branches: ['**']
+    paths-ignore:
+      # Docs-site-only files; docs/api/** (packaged by pom.xml) and
+      # docs/RELEASE_NOTES.md (read by release.yml) still run the checks.
+      - 'docs/.vitepress/**'
+      - 'docs/public/**'
+      - 'docs/index.md'
+      - 'docs/overview.md'
+      - 'docs/android.md'
+      - 'docs/ios.md'
+      - 'docs/api.md'
+      - 'docs/ARCHITECTURE.md'
+      - 'docs/PUBLISHING.md'
+      - 'docs/VERIFICATION.md'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/generate-api-page.mjs'
+      - '.github/workflows/docs.yml'
   pull_request:
+    paths-ignore:
+      # Docs-site-only files; docs/api/** (packaged by pom.xml) and
+      # docs/RELEASE_NOTES.md (read by release.yml) still run the checks.
+      - 'docs/.vitepress/**'
+      - 'docs/public/**'
+      - 'docs/index.md'
+      - 'docs/overview.md'
+      - 'docs/android.md'
+      - 'docs/ios.md'
+      - 'docs/api.md'
+      - 'docs/ARCHITECTURE.md'
+      - 'docs/PUBLISHING.md'
+      - 'docs/VERIFICATION.md'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'scripts/generate-api-page.mjs'
+      - '.github/workflows/docs.yml'
 permissions:
   contents: read
 jobs:

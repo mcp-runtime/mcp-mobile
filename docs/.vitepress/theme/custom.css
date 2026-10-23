@@ -95,3 +95,7 @@
   .home-section { padding: 16px; }
   .home-section h2 { font-size: 24px; }
 }
+
+/* Mermaid HTML labels clip descenders (g, p, y) without this. */
+.mermaid foreignObject { overflow: visible; }
+.mermaid .nodeLabel, .mermaid .edgeLabel { line-height: 1.45; }

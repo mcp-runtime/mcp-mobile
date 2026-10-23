@@ -78,3 +78,4 @@ bugreport-*
 # Docs site
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+docs/api.md

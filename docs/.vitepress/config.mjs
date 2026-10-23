@@ -72,7 +72,7 @@ export default withMermaid({
   mermaid: {
     theme: 'neutral',
     fontFamily: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-    flowchart: { htmlLabels: true, curve: 'basis', padding: 14, wrappingWidth: 320, useMaxWidth: true },
+    flowchart: { htmlLabels: true, curve: 'basis', padding: 22, wrappingWidth: 320, useMaxWidth: true },
     sequence: { mirrorActors: false, useMaxWidth: true }
   },
   themeConfig: {
