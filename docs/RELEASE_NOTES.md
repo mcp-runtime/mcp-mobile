@@ -1,3 +1,7 @@
+# Release notes
+
+## 0.1.0 preview
+
 The first native MCP Mobile SDK preview wraps the official MCP Kotlin SDK 0.15.0 and Swift SDK 0.12.1.
 
 - Kotlin suspend APIs and a Java callback facade, with cancellable requests, host-supplied credentials, explicit connection state and bounded operations.
