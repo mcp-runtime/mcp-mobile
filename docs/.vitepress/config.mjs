@@ -16,9 +16,6 @@ const rewrites = Object.fromEntries(
     .map((f) => [f, `${f.slice(0, -3).toLowerCase().replace(/_/g, '-')}/index.md`])
 )
 
-// The page URLs differ from the source file names (see rewrites), so the
-// theme's "drop entries whose page does not exist" check is bypassed by
-// passing nav and sidebar through themeConfig below.
 const nav = [
   { text: 'Get started', items: [
     { text: 'Overview', link: '/overview/' },
@@ -54,8 +51,7 @@ export default defineDocsConfig({
   siteUrl: 'https://mcp-mobile.tavric-labs.net',
   description:
     'Small native adapters around the official MCP Kotlin and Swift SDKs, for Android and iOS apps that need an MCP client.',
-  extra: {
-    rewrites,
-    themeConfig: { nav, sidebar }
-  }
+  nav,
+  sidebar,
+  extra: { rewrites }
 })
